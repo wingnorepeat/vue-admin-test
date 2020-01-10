@@ -88,12 +88,20 @@ export const constantRoutes = [
         meta: { title: 'Form', icon: 'form' }
       }
     ]
-  },
+  }
+]
 
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+
+export const asyncRoutes = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/menu1',
+    // redirect: '/nested/menu1',
+    redirect: 'noRedirect',
     name: 'Nested',
     meta: {
       title: 'Nested',
@@ -105,6 +113,7 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'Menu1' },
+        redirect: 'noRedirect',
         children: [
           {
             path: 'menu1-1',
@@ -112,26 +121,26 @@ export const constantRoutes = [
             name: 'Menu1-1',
             meta: { title: 'Menu1-1' }
           },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
+          // {
+          //   path: 'menu1-2',
+          //   component: () => import('@/views/nested/menu1/menu1-2'),
+          //   name: 'Menu1-2',
+          //   meta: { title: 'Menu1-2' },
+          //   children: [
+          //     {
+          //       path: 'menu1-2-1',
+          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+          //       name: 'Menu1-2-1',
+          //       meta: { title: 'Menu1-2-1' }
+          //     },
+          //     {
+          //       path: 'menu1-2-2',
+          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+          //       name: 'Menu1-2-2',
+          //       meta: { title: 'Menu1-2-2' }
+          //     }
+          //   ]
+          // },
           {
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3'),
@@ -159,12 +168,11 @@ export const constantRoutes = [
     ]
   },
 
-  // 404 page must be placed at the end !!!
+  // 404 page 必须放在路由表的最后 !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
