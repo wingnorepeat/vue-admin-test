@@ -2,12 +2,19 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/sys/login',
     method: 'post',
     data
   })
 }
 
+export function getMenus() {
+  return request({
+    url: '/sys/menu/nav',
+    methods: 'get',
+    params: { t: new Date().getTime() }
+  })
+}
 export function getInfo(token) {
   return request({
     url: '/user/info',

@@ -1,42 +1,41 @@
 import { asyncRoutes, constantRoutes } from '@/router'
 
-/**
- * Use meta.role to determine if the current user has permission
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
-  } else {
-    return true
-  }
-}
-
-/**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
- */
-export function filterAsyncRoutes(routes, roles) {
+export function handleMenuRoutes(routes) {
   const res = []
-
   routes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
-        console.log('henry')
-        console.log(tmp)
-      }
-      res.push(tmp)
-      console.log('wing')
-      console.log(tmp)
+    if (tmp.list) {
+      tmp.children = handleMenuRoutes(tmp.list)
+    }
+    res.push({
+      name: tmp.name,
+      alwaysShow: tmp.children && tmp.children.length ? true : false,
+      meta: {
+        icon: tmp.children && tmp.children.length ? 'tree' : '',
+        title: tmp.name
+      },
+      path: tmp.url,
+      children: tmp.children
+    })
+  })
+  return res
+}
+
+const realRoutes = asyncRoutes
+
+export function handleAsyncRoutes(routes) {
+  routes.forEach(route => {
+    if (!route.list || !route.list.length) {
+      realRoutes[0].children.push({
+        path: route.url,
+        name: route.name,
+        meta: { title: route.name },
+        component: resolve => require(['@/views/' + route.url + '.vue'], resolve)
+      })
+    } else {
+      handleAsyncRoutes(route.list)
     }
   })
-  // console.log('wingaaa')
-  // console.log(res)
-  return res
 }
 
 const state = {
@@ -52,16 +51,12 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  buildRoutes({ commit }, userMenus) {
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      const menuRoutes = handleMenuRoutes(userMenus)
+      handleAsyncRoutes(userMenus)
+      commit('SET_ROUTES', menuRoutes)
+      resolve(realRoutes)
     })
   }
 }

@@ -6,18 +6,19 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
+import { menuList } from '@/api/data'
+
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
-  // start progress bar
+  // 开始进程
   NProgress.start()
 
-  // set page title
+  // 设置页面title
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
   const hasToken = getToken()
 
   if (hasToken) {
@@ -26,27 +27,18 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      // 确定用户是否通过getInfo获得了他的权限角色
-      const hasRoles = store.getters.roles && store.getters.roles.length > 0
-      if (hasRoles) {
+      // 获取菜单权限
+      const hasRoutes = store.getters.permission_routes && store.getters.permission_routes.length > 0
+      if (hasRoutes) {
         next()
       } else {
         try {
-          // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles } = await store.dispatch('user/getInfo')
-
-          // generate accessible routes map based on roles
-          const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-
-          // dynamically add accessible routes
+          const userMenus = await store.dispatch('user/getMenus')
+          // const userMenus = menuList
+          const accessRoutes = await store.dispatch('permission/buildRoutes', userMenus)
           router.addRoutes(accessRoutes)
-
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
         } catch (error) {
-          // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
@@ -55,7 +47,7 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
-    /* has no token*/
+    /* 当无token时*/
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
@@ -66,5 +58,5 @@ router.beforeEach(async(to, from, next) => {
 })
 
 router.afterEach(() => {
-  NProgress.done() // finish progress bar
+  NProgress.done() // 完成进程
 })

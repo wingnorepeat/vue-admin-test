@@ -75,7 +75,7 @@ export default {
 
       // Show parent if there are no child router to display
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        this.onlyOneChild = { ... parent, noShowingChildren: true }
         return true
       }
 
@@ -88,7 +88,10 @@ export default {
       if (isExternal(this.basePath)) {
         return this.basePath
       }
-      return path.resolve(this.basePath, routePath)
+      if (!routePath) {
+        return ''
+      }
+      return path.resolve(__dirname, routePath)
     }
   }
 }

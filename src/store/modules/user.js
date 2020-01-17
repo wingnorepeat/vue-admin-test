@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, getMenus, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -34,13 +34,34 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
+      const params = {
+        orgCode: 'sun1',
+        password: '123456',
+        subjectCode: 'sunzhixingkeb',
+        userCode: 'danqing'
+      }
+      login(params).then(response => {
+        const data = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // get user Menus
+  getMenus({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getMenus().then(res => {
+        const data = res.menuList
+        if (!data) {
+          reject('获取用户信息失败，请重新登录！')
+        } else {
+          resolve(data)
+        }
       }).catch(error => {
         reject(error)
       })

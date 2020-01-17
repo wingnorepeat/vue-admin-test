@@ -25,26 +25,26 @@ const users = {
 
 export default [
   // user login
-  {
-    url: '/user/login',
-    type: 'post',
-    response: config => {
-      const { username } = config.body
-      const token = tokens[username]
-      // mock error
-      if (!token) {
-        return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
-        }
-      }
+  // {
+  //   url: '/user/login',
+  //   type: 'post',
+  //   response: config => {
+  //     const { username } = config.body
+  //     const token = tokens[username]
+  //     // mock error
+  //     if (!token) {
+  //       return {
+  //         code: 60204,
+  //         message: 'Account and password are incorrect.'
+  //       }
+  //     }
 
-      return {
-        code: 20000,
-        data: token
-      }
-    }
-  },
+  //     return {
+  //       code: 20000,
+  //       data: token
+  //     }
+  //   }
+  // },
 
   // get user info
   {
@@ -52,7 +52,7 @@ export default [
     type: 'get',
     response: config => {
       const { token } = config.query
-      const info = users[token]
+      const info = users['editor-token']
 
       // mock error
       if (!info) {
@@ -63,7 +63,7 @@ export default [
       }
 
       return {
-        code: 20000,
+        code: 0,
         data: info
       }
     }
@@ -75,7 +75,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 0,
         data: 'success'
       }
     }
