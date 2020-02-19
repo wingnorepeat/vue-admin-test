@@ -60,6 +60,7 @@ module.exports = {
         '@C': resolve('src/components'),
         '@U': resolve('src/utils'),
         '@V': resolve('src/views'),
+        '@D': resolve('src/dto'),
         'assets': resolve('src/assets')
       }
     }
