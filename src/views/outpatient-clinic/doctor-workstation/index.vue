@@ -11,7 +11,7 @@
     <his-session-title name="病人信息">
       <template>
         <el-button size="small">候诊病人</el-button>
-        <div class="message">
+        <div class="message-disease">
           <span>张三（欠费）</span>
           <span>男</span>
           <span>21岁3个月</span>
@@ -24,13 +24,15 @@
       </template>
     </his-session-title>
     <div class="main-content">
-      <div class="left">
+      <div class="left" style="display: none;">
         <panicked-patients></panicked-patients>
       </div>
-      <div class="middle">
+      <div class="middle" style="display: none;">
         <drug-treatment></drug-treatment>
       </div>
-      <div class="right" style="display: none;"></div>
+      <div class="right">
+        <case-tmpl></case-tmpl>
+      </div>
     </div>
   </div>
 </template>
@@ -38,16 +40,18 @@
 <script>
 import PanickedPatients from './components/PanickedPatients'
 import DrugTreatment from './components/DrugTreatment'
+import CaseTmpl from './templates/CaseTmpl'
 
 export default {
+  components: {
+    PanickedPatients,
+    DrugTreatment,
+    CaseTmpl
+  },
   data() {
     return {
       data: ''
     }
-  },
-  components: {
-    PanickedPatients,
-    DrugTreatment
   }
 }
 </script>
@@ -59,7 +63,7 @@ export default {
     justify-content: flex-end;
     margin-bottom: 10px;
   }
-  .message {
+  .message-disease {
     font-size: 14px;
     color: #999;
     span {

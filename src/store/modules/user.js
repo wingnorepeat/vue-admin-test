@@ -41,14 +41,21 @@ const actions = {
         subjectCode: 'sunzhixingkeb',
         userCode: 'danqing'
       }
-      login(params).then(response => {
-        const data = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+
+      // 静态本地（待删）
+      commit('SET_TOKEN', '22222'),
+      setToken('22222')
+      resolve()
+
+      // 动态（回公司再加）
+      // login(params).then(response => {
+      //   const data = response
+      //   commit('SET_TOKEN', data.token)
+      //   setToken(data.token)
+      //   resolve()
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 

@@ -1,5 +1,5 @@
 import { norlizeColumns } from '@U/handle'
-import { AttendanceStatusEnmu, RegisteredTimeEnmu } from './enmus'
+import * as e from './enmus'
 
 const ColumnsMaps = new Map()
 
@@ -8,11 +8,15 @@ ColumnsMaps.set('w2', '就诊状态')
 
 class Outpatient {
   static get attendanceStatus() {
-    return AttendanceStatusEnmu
+    return e.AttendanceStatusEnmu
   }
 
   static get registeredTime() {
-    return RegisteredTimeEnmu
+    return e.RegisteredTimeEnmu
+  }
+
+  static get healthTeachRecipe() {
+    return e.HealthTeachRecipeEnmu
   }
 
   static get attendanceColumns() {
@@ -20,6 +24,10 @@ class Outpatient {
       ['w1', 'w2'],
       ColumnsMaps
     )
+  }
+
+  static get caseHistoryTmplType() {
+    return e.CaseHistoryTmplRadio
   }
 }
 

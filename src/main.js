@@ -18,6 +18,14 @@ import '@/permission' // permission control
 import hisComponents from '@C'
 Vue.use(hisComponents)
 
+Vue.prototype.globalClick = (callback) => {
+  document.getElementById('app').addEventListener('click', () => {
+    callback()
+  })
+ }
+
+ import "@U/outside"
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

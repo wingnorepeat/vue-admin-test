@@ -24,7 +24,7 @@
     <div class="table">
       <his-table @row-dblclick="onRowDblclick" :tableData="tableData" :columns="o.attendanceColumns">
           <el-table-column label="操作" align="center" width="80">
-              <template slot-scope="scope">
+              <template>
                 <el-button type="text" @click.stop="seeDoctor">就诊</el-button>
               </template>
           </el-table-column>

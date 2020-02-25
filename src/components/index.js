@@ -7,12 +7,16 @@ import SessionTitle from './SessionTitle/index.vue'
 import Select from './Select/index.vue'
 import Table from './Table/index.vue'
 import Flex from './Flex/index.vue'
+import Number from './Number/index.vue'
+import SelectPage from './SelectPage/index.vue'
 
 const components = [
   SessionTitle,
   Select,
   Table,
-  Flex
+  Flex,
+  Number,
+  SelectPage
 ]
 
 export default {

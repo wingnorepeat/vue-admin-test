@@ -33,8 +33,8 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          const userMenus = await store.dispatch('user/getMenus')
-          // const userMenus = menuList
+          // const userMenus = await store.dispatch('user/getMenus')
+          const userMenus = menuList
           const accessRoutes = await store.dispatch('permission/buildRoutes', userMenus)
           router.addRoutes(accessRoutes)
           next({ ...to, replace: true })

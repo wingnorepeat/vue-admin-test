@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-box-wrapper">
+  <div class="flex-box-wrapper" :class="{inline, inline}">
     <div class="flex-left">{{title}}</div>
     <div class="flex-right">
     	<slot></slot>
@@ -9,13 +9,17 @@
 
 <script>
 export default {
-		name: 'Flex',
-    props: {
-        title: {
-            type: String,
-            default: ''
-        }
-    }
+	name: 'Flex',
+	props: {
+		title: {
+			type: String,
+			default: ''
+		},
+		inline: {
+			type: Boolean,
+			default: false
+		}
+	}
 }
 </script>
 
@@ -25,6 +29,9 @@ export default {
   	align-items: center;
   	margin-bottom: 10px;
   	color: #666;
+		&.inline {
+      margin-right: 15px;
+		}
   	.flex-left {
   		flex-grow: 0;
   		flex-shrink: 0;
@@ -38,9 +45,9 @@ export default {
   		.selector {
   			width: 100%;
   		}
-  		.el-select {
-  			width: 100%;
-  		}
+  		// .el-select {
+  		// 	width: 100%;
+  		// }
   	}
   }
 </style>
